@@ -74,30 +74,39 @@ environment:
     - role: conversation
       cli: claude
       required: true
+      model: opus
     - role: coordinator
       cli: claude
       required: true
+      model: sonnet
     - role: planner
       cli: claude
       required: true
+      model: opus
     - role: architect
       cli: claude
       required: true
+      model: sonnet
     - role: specifier
       cli: claude
       required: true
+      model: sonnet
     - role: developer
       cli: claude
       required: false
+      model: haiku
     - role: reviewer
       cli: claude
       required: true
+      model: opus
     - role: qa
       cli: claude
       required: true
+      model: haiku
     - role: sos
       cli: claude
       required: false
+      model: sonnet
   # Cấu hình profile `ai-isolator` mặc định cho từng Provider CLI (`codex`, `claude`, `agy`).
   # Có thể thêm `profile-name: <tên-profile>` bên dưới từng provider nếu muốn dùng chung cho mọi role.
   defaults:
@@ -190,7 +199,7 @@ environment:
       enabled: true
       required: false
     gitnexus:
-      enabled: false
+      enabled: true
       required: false
     mempalace:
       enabled: true
