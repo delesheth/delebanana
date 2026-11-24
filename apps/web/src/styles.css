@@ -1,0 +1,1494 @@
+/* Dele Banana: bố cục ba cột — sidebar Campaign | văn phòng 3D | sidebar Director. */
+:root {
+  --bg: #dfe5e6;
+  --panel: #fbf8f1;
+  --ink: #1a1a1a;
+  --text: #1a1a1a;
+  --muted: #6b6659;
+  --accent: #ffc400;
+  --line: #e2ded3;
+  --mine: #0084ff;
+  --mine-text: #ffffff;
+  --theirs: #e9eaee;
+  --theirs-text: #050505;
+  --ui-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --chat-font: var(--ui-font);
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-family: var(--ui-font);
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+}
+
+code,
+pre {
+  font-family: var(--mono);
+  font-size: 0.92em;
+}
+
+.app {
+  --side: max(33.333vw, 360px);
+  height: 100%;
+  display: grid;
+  grid-template-columns: 0 minmax(0, 1fr) 0;
+  /* Một hàng đúng bằng chiều cao màn hình: nội dung dài trong sidebar tự cuộn, không kéo giãn cả trang. */
+  grid-template-rows: minmax(0, 1fr);
+  background: var(--bg);
+  overflow: hidden;
+}
+.app.left-open {
+  grid-template-columns: var(--side) minmax(0, 1fr) 0;
+}
+.app.right-open {
+  grid-template-columns: 0 minmax(0, 1fr) var(--side);
+}
+.app.left-open.right-open {
+  grid-template-columns: var(--side) minmax(0, 1fr) var(--side);
+}
+
+.stage {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---------- Nút & ô nhập chung ---------- */
+button,
+select,
+input {
+  font: inherit;
+}
+
+button,
+select,
+a.button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #cfcabd;
+  background: white;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+a.button {
+  display: inline-block;
+  text-decoration: none;
+}
+
+button:hover:not(:disabled),
+a.button:hover {
+  background: #fff4cc;
+  border-color: #b9b29f;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+input[type='text'],
+input:not([type]) {
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid #cfcabd;
+  background: white;
+}
+
+input:not([type]):focus {
+  outline: none;
+  border-color: var(--mine);
+}
+
+input[type='checkbox'] {
+  accent-color: var(--ink);
+}
+
+.error {
+  color: #b3261e;
+  font-size: 12px;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: relative;
+  z-index: 5;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  font-size: 13px;
+}
+.sidebar.left {
+  border-right: 1px solid #d4cfc2;
+}
+.sidebar.right {
+  border-left: 1px solid #d4cfc2;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.sidebar-icon {
+  flex: 0 0 auto;
+  font-size: 20px;
+  line-height: 1;
+}
+.sidebar-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sidebar-title h2 {
+  margin: 0;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-title .pending {
+  color: #b35c00;
+}
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 15px;
+  color: var(--muted);
+}
+.icon-btn:hover:not(:disabled) {
+  background: #efe9da;
+  color: var(--ink);
+}
+.sidebar-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar.left .sidebar-body {
+  overflow-y: auto;
+}
+.sidebar.left .presence {
+  font-size: 12px;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.presence i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b0b3b8;
+}
+.presence.online i {
+  background: #31a24c;
+}
+.presence.offline {
+  color: #b3261e;
+}
+.presence.offline i {
+  background: #e5484d;
+}
+
+/* Các mục trong sidebar Campaign */
+.side-section {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.side-section h2,
+.side-section h3 {
+  margin: 0;
+  font-size: 13px;
+}
+.side-section h3 {
+  margin-top: 4px;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.side-section ul,
+.side-section ol {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.side-section .row {
+  display: flex;
+  gap: 6px;
+}
+.side-section .row input {
+  flex: 1;
+  min-width: 0;
+}
+.side-section .campaigns button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  border-color: transparent;
+  background: transparent;
+}
+.side-section .campaigns button:hover:not(:disabled) {
+  background: #f3ecd8;
+}
+.side-section .campaigns button.selected {
+  background: var(--accent);
+  border-color: var(--ink);
+}
+.approval-panel {
+  background: #fff8e1;
+}
+.approval-panel section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.approval-panel fieldset {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 0;
+}
+.approval-panel .check {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.approval-panel .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.approval-panel .detail {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.approval-panel .error {
+  margin: 0;
+}
+
+/* Sidebar Director: luồng chat chiếm hết chiều cao */
+.sidebar.right .chat-thread.large {
+  flex: 1;
+}
+.sidebar.right .chat-composer {
+  margin: 0;
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+}
+
+/* ---------- Lớp phủ trên văn phòng 3D ---------- */
+.agent-panel {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 280px;
+  max-height: calc(100% - 120px);
+  overflow: auto;
+  background: rgba(251, 248, 241, 0.96);
+  border: 1px solid #d4cfc2;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  padding: 12px 14px;
+  font-size: 13px;
+  z-index: 3;
+}
+.agent-panel h2 {
+  font-size: 15px;
+  margin: 0;
+}
+.agent-panel .role {
+  margin: 2px 0 8px;
+  color: var(--muted);
+}
+.agent-task {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid #e6e1d5;
+  padding-top: 8px;
+}
+.agent-task .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.agent-task .campaign {
+  color: var(--muted);
+}
+.agent-task .desc {
+  margin: 2px 0 0;
+  line-height: 1.4;
+}
+.agent-panel .close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  padding: 0 6px;
+}
+
+.agent-chips {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.agent-chips span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  background: var(--panel);
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-family: var(--mono);
+  box-shadow: 0 2px 0 var(--ink);
+}
+.agent-chips span.selected {
+  background: var(--accent);
+}
+
+.provider-banner {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  max-width: calc(100% - 24px);
+  padding: 8px 10px 8px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+.provider-banner {
+  background: var(--accent);
+  border: 1px solid var(--ink);
+}
+.provider-banner .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.provider-banner .error {
+  margin: 0;
+}
+
+
+/* ---------- Chat Director kiểu Messenger ---------- */
+.chat-thread {
+  list-style: none;
+  margin: 0;
+  padding: 6px 2px;
+  height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--chat-font);
+  font-size: 14px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.chat-thread.large {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  padding: 10px 6px;
+  font-size: 15px;
+}
+.chat-empty {
+  margin: auto;
+  padding: 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+.chat-time {
+  text-align: center;
+  color: #8a8d91;
+  font-size: 11px;
+  margin: 10px 0 6px;
+}
+.chat-system {
+  text-align: center;
+  color: #65676b;
+  font-size: 12px;
+  font-style: italic;
+  margin: 6px 24px;
+}
+.chat-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  margin-top: 2px;
+  padding: 0 4px;
+}
+.chat-row.first {
+  margin-top: 8px;
+}
+.chat-row.mine {
+  justify-content: flex-end;
+}
+.chat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 78%;
+  min-width: 0;
+}
+.chat-row.mine .chat-col {
+  align-items: flex-end;
+}
+.chat-row.theirs .chat-col {
+  align-items: flex-start;
+}
+.chat-name {
+  font-size: 11px;
+  color: #65676b;
+  margin: 0 0 1px 12px;
+}
+.chat-avatar {
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  font-family: var(--chat-font);
+}
+.chat-row.last .chat-avatar {
+  background: var(--accent);
+  border: 1.5px solid var(--ink);
+}
+.chat-avatar.big {
+  flex-basis: 36px;
+  width: 36px;
+  height: 36px;
+  font-size: 15px;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+}
+.chat-bubble {
+  padding: 7px 12px;
+  border-radius: 18px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.chat-row.mine .chat-bubble {
+  background: var(--mine);
+  color: var(--mine-text);
+}
+.chat-row.theirs .chat-bubble {
+  background: var(--theirs);
+  color: var(--theirs-text);
+}
+/* Tin Director vừa đến: trượt lên, mờ dần vào rồi nháy sáng nhẹ. */
+.chat-row.theirs.fresh .chat-col {
+  animation: chat-in 280ms ease-out both;
+}
+.chat-row.theirs.fresh .chat-bubble {
+  animation: chat-glow 1.4s ease-out 280ms;
+}
+@keyframes chat-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes chat-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  25% {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--mine) 35%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-row.theirs.fresh .chat-col,
+  .chat-row.theirs.fresh .chat-bubble {
+    animation: none;
+  }
+}
+/* Bo góc phía người gửi nhỏ lại giữa cụm tin, giống Messenger. */
+.chat-row.mine:not(.first) .chat-bubble {
+  border-top-right-radius: 5px;
+}
+.chat-row.mine:not(.last) .chat-bubble {
+  border-bottom-right-radius: 5px;
+}
+.chat-row.theirs:not(.first) .chat-bubble {
+  border-top-left-radius: 5px;
+}
+.chat-row.theirs:not(.last) .chat-bubble {
+  border-bottom-left-radius: 5px;
+}
+.chat-tag {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #1b74e4;
+  margin-bottom: 2px;
+}
+.chat-images {
+  display: grid;
+  gap: 3px;
+  grid-template-columns: repeat(var(--cols, 1), minmax(0, 1fr));
+  width: min(220px, 100%);
+}
+.chat-thread.large .chat-images {
+  width: min(300px, 100%);
+}
+.chat-images.n2 {
+  --cols: 2;
+}
+.chat-images.n3 {
+  --cols: 3;
+}
+.chat-image {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--theirs);
+  aspect-ratio: 1;
+  cursor: zoom-in;
+}
+.chat-images:not(.n2):not(.n3) .chat-image {
+  aspect-ratio: auto;
+}
+.chat-image:active:not(:disabled) {
+  transform: none;
+}
+.chat-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-height: 260px;
+}
+.chat-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.82);
+  display: grid;
+  place-items: center;
+  cursor: zoom-out;
+}
+.chat-lightbox img {
+  max-width: 92vw;
+  max-height: 92vh;
+  border-radius: 6px;
+}
+
+.chat-composer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  border-radius: 10px;
+}
+.chat-composer.dragging {
+  outline: 2px dashed var(--mine);
+  outline-offset: 2px;
+}
+.chat-composer .error {
+  font-size: 12px;
+}
+.chat-pending {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chat-pending li {
+  position: relative;
+  width: 56px;
+  height: 56px;
+}
+.chat-pending img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+.chat-pending button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border-radius: 50%;
+  border-width: 1.5px;
+  box-shadow: none;
+  font-size: 13px;
+  line-height: 1;
+}
+.chat-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+.chat-input-row textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  max-height: 120px;
+  field-sizing: content;
+  padding: 8px 12px;
+  border-radius: 18px;
+  border: 1.5px solid var(--line);
+  background: #f0f2f5;
+  font-family: var(--chat-font);
+  font-size: 14px;
+  line-height: 1.3;
+}
+.chat-input-row textarea:focus {
+  outline: none;
+  border-color: var(--mine);
+  background: white;
+}
+.chat-attach {
+  padding: 5px 8px;
+  border-radius: 50%;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+  font-size: 17px;
+}
+.chat-send {
+  background: var(--mine);
+  color: white;
+  border-color: #0064c2;
+  box-shadow: 0 2px 0 #0064c2;
+  border-radius: 18px;
+  font-weight: 700;
+}
+.chat-send:hover:not(:disabled) {
+  background: #0073e0;
+}
+.chat-send:disabled {
+  cursor: not-allowed;
+  background: #9cc9f5;
+  border-color: #9cc9f5;
+  box-shadow: none;
+}
+
+
+/* ---------- Dock phòng ban kiểu macOS ---------- */
+.room-dock {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 7px 9px;
+  max-width: calc(100% - 24px);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18), inset 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+}
+.dock-item {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 13px;
+  background: linear-gradient(180deg, #ffffff, #eef0f3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  display: grid;
+  place-items: center;
+  transform-origin: bottom center;
+  transition: transform 0.18s cubic-bezier(0.3, 0.7, 0.4, 1.4), margin 0.18s;
+}
+.dock-item:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ffffff, #eef0f3);
+  transform: scale(1.28) translateY(-4px);
+  margin: 0 6px;
+}
+.dock-item:active:not(:disabled) {
+  transform: scale(1.18) translateY(-2px);
+}
+.dock-icon {
+  font-size: 25px;
+  line-height: 1;
+}
+.dock-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: #1a1a1a;
+}
+.dock-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.78);
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 7px;
+  background: rgba(30, 30, 30, 0.82);
+  color: white;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.dock-item:hover .dock-tip,
+.dock-item:focus-visible .dock-tip {
+  opacity: 1;
+}
+.dock-divider {
+  align-self: stretch;
+  width: 1px;
+  margin: 4px 3px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- Nút mở Campaign / Director ở hai góc đáy ---------- */
+.launcher {
+  position: absolute;
+  overflow: visible;
+  bottom: 22px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.launcher.left {
+  left: 16px;
+}
+.launcher.right {
+  right: 16px;
+}
+.launcher.unread {
+  background: var(--mine);
+  color: white;
+  border-color: #0064c2;
+}
+.launcher.unread:hover:not(:disabled) {
+  background: #0073e0;
+  border-color: #0064c2;
+}
+/* Nút mở Gemini/ChatGPT ở bước làm video: cùng màu xanh với nút chat có thông báo cho dễ thấy. */
+a.button.tool-open {
+  background: var(--mine);
+  color: white;
+  border-color: #0064c2;
+}
+a.button.tool-open:hover {
+  background: #0073e0;
+  border-color: #0064c2;
+}
+.unread-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e5484d;
+  border: 2px solid white;
+}
+
+/* ---------- Màn hình hẹp: sidebar phủ lên văn phòng ---------- */
+@media (max-width: 900px) {
+  .app.left-open,
+  .app.right-open,
+  .app.left-open.right-open {
+    grid-template-columns: 0 minmax(0, 1fr) 0;
+  }
+  .sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: min(420px, 92vw);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+  }
+  .sidebar.left {
+    left: 0;
+  }
+  .sidebar.right {
+    right: 0;
+  }
+  .dock-item {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+  .dock-icon {
+    font-size: 19px;
+  }
+  .launcher {
+    bottom: 78px;
+  }
+}
+
+/* ---------- Nút nguồn (Start / Stop server) ---------- */
+.power-bar {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.power {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.power.stop,
+.power.start {
+  color: white;
+  padding: 10px 26px;
+  font-size: 15px;
+}
+.power.stop {
+  background: #c62828;
+  border-color: #8e1c1c;
+  box-shadow: 0 0 0 6px rgba(198, 40, 40, 0.22), 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.power.stop:hover:not(:disabled) {
+  background: #b02222;
+  border-color: #8e1c1c;
+}
+.power.start {
+  background: #2a8a3a;
+  border-color: #1d5f28;
+  box-shadow: 0 0 0 6px rgba(42, 138, 58, 0.25), 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.power.start:hover:not(:disabled) {
+  background: #237a31;
+  border-color: #1d5f28;
+}
+.power.off {
+  color: #e9ecf5;
+  background: rgba(20, 24, 36, 0.7);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.power-error {
+  max-width: 420px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #fff1f1;
+  color: #b3261e;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ---------- Nút chính, văn bản Markdown ---------- */
+button.primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+  font-weight: 600;
+}
+button.primary:hover:not(:disabled) {
+  background: #333;
+  border-color: #333;
+}
+button.small {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+.md {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.md p,
+.md ul,
+.md h4 {
+  margin: 0 0 6px;
+}
+.md ul {
+  padding-left: 18px;
+  list-style: disc;
+}
+.md h4 {
+  font-size: 13px;
+}
+.side-section .md ul {
+  display: block;
+  padding-left: 18px;
+}
+
+/* ---------- Chọn kịch bản ---------- */
+.approval-panel .lead {
+  margin: 0;
+  line-height: 1.45;
+}
+.script-list {
+  counter-reset: none;
+}
+.side-section .script-list {
+  gap: 8px;
+}
+.script-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.script-card.picked {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.script-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+.script-head input {
+  margin-top: 3px;
+}
+.script-title {
+  font-weight: 600;
+  line-height: 1.35;
+}
+.script-preview {
+  margin: 6px 0 0 24px;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+.script-card .md {
+  margin: 8px 0 0 24px;
+}
+.approval-panel .note {
+  width: 100%;
+  resize: vertical;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #cfcabd;
+  font: inherit;
+}
+
+/* ---------- Chi tiết chiến dịch ---------- */
+.status-badge {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #ece8dc;
+  color: #5a5546;
+  white-space: nowrap;
+}
+.status-badge.briefing {
+  background: #e3efff;
+  color: #1b5fb4;
+}
+.status-badge.active {
+  background: #fff1c7;
+  color: #8a6100;
+}
+.status-badge.completed {
+  background: #dcf3e2;
+  color: #1f7a37;
+}
+.detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.detail-head h2 {
+  font-size: 15px;
+}
+.stepper {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0 !important;
+  margin: 4px 0 !important;
+}
+.stepper li {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3px;
+  position: relative;
+}
+.stepper li + li::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--line);
+  z-index: 0;
+}
+.stepper li.done + li::before {
+  background: #31a24c;
+}
+.step-dot {
+  position: relative;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: white;
+  border: 2px solid var(--line);
+  color: var(--muted);
+}
+.stepper li.done .step-dot {
+  background: #31a24c;
+  border-color: #31a24c;
+  color: white;
+}
+.stepper li.running .step-dot {
+  border-color: #e0a100;
+  color: #8a6100;
+}
+.stepper li.waiting_you .step-dot {
+  background: #e5484d;
+  border-color: #e5484d;
+  color: white;
+}
+.step-label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.step-hint {
+  font-size: 11px;
+  color: var(--muted);
+}
+.next-action {
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #f3f1ea;
+  border: 1px solid var(--line);
+}
+.next-action p {
+  margin: 4px 0 8px;
+  line-height: 1.45;
+}
+.next-action p:last-child {
+  margin-bottom: 0;
+}
+.next-action.approve {
+  background: #fff1f1;
+  border-color: #f0b4b4;
+}
+.next-action.done {
+  background: #e9f7ed;
+  border-color: #b5dfc0;
+}
+.next-action.chat {
+  background: #eaf3ff;
+  border-color: #b9d4f7;
+}
+.deliverable {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.deliverable header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.deliverable h4 {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.research {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.research summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.research .md {
+  margin-top: 8px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+/* ---------- Chuông thông báo (góc trên phải) ---------- */
+.bell-wrap {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 6;
+}
+.bell {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: visible;
+}
+.bell.unread {
+  background: var(--mine);
+  border-color: #0064c2;
+  color: white;
+}
+.bell.unread:hover:not(:disabled) {
+  background: #0073e0;
+}
+.bell-panel {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #d4cfc2;
+  border-radius: 14px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  font-size: 13px;
+}
+.bell-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.bell-panel h2 {
+  margin: 0;
+  font-size: 15px;
+}
+button.link {
+  border: none;
+  background: none;
+  padding: 2px 4px;
+  color: #1b74e4;
+  font-size: 12px;
+}
+.bell-panel .empty {
+  padding: 18px 14px;
+  margin: 0;
+}
+.bell-panel ol {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+}
+.notice {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  text-align: left;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  padding: 10px;
+}
+.notice:hover:not(:disabled) {
+  background: #f4f1e8;
+}
+.notice-mark {
+  flex: 0 0 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 12px;
+  background: #dcf3e2;
+  color: #1f7a37;
+}
+.notice.approval .notice-mark {
+  background: #ffe1e1;
+  color: #c62828;
+}
+.notice.campaign_done .notice-mark {
+  background: #fff1c7;
+  color: #8a6100;
+}
+.notice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  line-height: 1.4;
+}
+.notice-body {
+  color: #444;
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- Hàng chiến dịch + nút xoá ---------- */
+.campaign-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.side-section .campaigns .campaign-row > button:first-child {
+  flex: 1;
+  min-width: 0;
+}
+.side-section .campaigns .row-delete {
+  width: auto;
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #b3261e;
+  opacity: 0.55;
+}
+.side-section .campaigns .row-delete:hover:not(:disabled) {
+  opacity: 1;
+  background: #fff0f0;
+  border-color: #e5a3a3;
+}
+
+/* ---------- Hộp xác nhận giữa màn hình ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(15, 18, 26, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.modal {
+  width: min(420px, 100%);
+  background: white;
+  border-radius: 16px;
+  padding: 20px 22px 16px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  font-size: 14px;
+}
+.modal h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.modal-body p {
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+button.danger {
+  background: #c62828;
+  border-color: #8e1c1c;
+  color: white;
+  font-weight: 600;
+}
+button.danger:hover:not(:disabled) {
+  background: #b02222;
+  border-color: #8e1c1c;
+}
+.approval-panel .video-tools,
+.approval-panel .video-guide {
+  margin: 4px 0;
+  padding-left: 18px;
+}
+.approval-panel .video-tools {
+  list-style: none;
+  padding-left: 0;
+}
+.approval-panel .actions a.button {
+  align-self: center;
+}
+.approval-panel .video-refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.approval-panel .video-refs img {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.chat-threads {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  flex: none;
+  border-bottom: 1px solid var(--border, #e4e6eb);
+}
+.chat-threads button {
+  flex: none;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border, #e4e6eb);
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+}
+.chat-threads button.selected {
+  background: #0084ff;
+  border-color: #0084ff;
+  color: #fff;
+}
+
+.chat-empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  color: #65676b;
+  font-size: 14px;
+}
+.chat-empty p {
+  margin: 0;
+}
+
+/* Đăng bài (phiếu D) */
+.publish-accounts summary { cursor: pointer; }
+.publish-accounts h4, .publish-accounts h5 { margin: 0.8em 0 0.3em; }
+.publish-accounts input { min-width: 0; flex: 1 1 8rem; }
+.publish-drafts { list-style: none; padding: 0; margin: 0.5em 0; }
+.publish-drafts li { margin-bottom: 0.8em; }
+.publish-when { border: 1px solid rgba(128, 128, 128, 0.4); border-radius: 6px; margin: 0.5em 0; }
+.publish-when label { margin-right: 1em; }
+ul.posts { list-style: none; padding: 0; margin: 0; }
+ul.posts .post { border: 1px solid rgba(128, 128, 128, 0.35); border-radius: 6px; padding: 0.5em; margin-bottom: 0.5em; }
+.status-badge.published { color: #1a7f37; }
+.status-badge.failed { color: #c0392b; }

@@ -1,1 +1,9 @@
 node_modules/
+dist/
+.DS_Store
+.superpowers/
+
+# Cấu hình/bí mật cục bộ (App Secret, token) — không bao giờ commit
+.env
+.env.*
+*.local.json
