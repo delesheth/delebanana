@@ -1,0 +1,1 @@
+ALTER TABLE `tasks` ADD `cli_failures` integer DEFAULT 0 NOT NULL;

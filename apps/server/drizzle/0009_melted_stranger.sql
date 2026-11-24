@@ -1,0 +1,1 @@
+ALTER TABLE `posts` ADD `finish_retried_at` integer;

@@ -1,23 +1,28 @@
 {
   "name": "delebanana",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "type": "module",
+  "description": "Dele Banana — Virtual AI Marketing Agency",
+  "packageManager": "pnpm@12.11.2",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm --filter @delebanana/web dev",
+    "build": "pnpm --filter @delebanana/web build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "server": "pnpm --filter @delebanana/server dev"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/delesheth/delebanana.git"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/delesheth/delebanana/issues"
   },
   "homepage": "https://github.com/delesheth/delebanana#readme",
   "devDependencies": {
-    "vitest": "^2.1.9"
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
   }
 }

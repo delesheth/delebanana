@@ -1,0 +1,1 @@
+ALTER TABLE `posts` ADD `finish_sent_at` integer;

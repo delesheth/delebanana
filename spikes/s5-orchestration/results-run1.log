@@ -1,0 +1,109 @@
+  ↳ agent.state_changed Linh (director) → idle
+  ↳ agent.state_changed Minh (coordinator) → idle
+  ↳ agent.state_changed An (researcher) → idle
+  ↳ agent.state_changed Chi (researcher) → idle
+  ↳ agent.state_changed Minh (coordinator) → planning
+▶ run1 Minh (coordinator) planning
+  ↳ task.created T1 (research.trend) → An: Xu hướng TikTok cho trà sữa trân châu đường đen tại TP.HCM (18–25 tuổi)
+  ↳ task.created T2 (research.competitor) → Chi: Phân tích đối thủ trà sữa trên TikTok tại TP.HCM
+  ✓ 12.4s, 2 lời gọi công cụ, 5h=0.4
+  ↳ agent.state_changed Minh (coordinator) → idle
+  ↳ task.status_changed T1 queued → assigned
+  ↳ agent.state_changed An (researcher) → assigned
+  ↳ task.status_changed T1 assigned → running
+  ↳ agent.state_changed An (researcher) → idle
+  ↳ agent.state_changed An (researcher) → researching
+▶ run2 An (researcher) task T1
+  ✓ 23.4s, 1 lời gọi công cụ, 5h=0.41
+  ↳ agent.state_changed An (researcher) → idle
+  ↳ task.status_changed T1 running → in_review
+  ↳ task.status_changed T2 queued → assigned
+  ↳ agent.state_changed Chi (researcher) → assigned
+  ↳ task.status_changed T2 assigned → running
+  ↳ agent.state_changed Chi (researcher) → idle
+  ↳ agent.state_changed Chi (researcher) → researching
+▶ run3 Chi (researcher) task T2
+  ✓ 22.7s, 1 lời gọi công cụ, 5h=0.41
+  ↳ agent.state_changed Chi (researcher) → idle
+  ↳ task.status_changed T2 running → in_review
+  ↳ agent.state_changed Minh (coordinator) → reviewing
+▶ run4 Minh (coordinator) review
+  ↳ task.status_changed T1 in_review → done
+  ↳ task.status_changed T2 in_review → queued
+  ✓ 13.1s, 2 lời gọi công cụ, 5h=0.42
+  ↳ agent.state_changed Minh (coordinator) → idle
+  ↳ task.status_changed T2 queued → assigned
+  ↳ agent.state_changed Chi (researcher) → assigned
+  ↳ task.status_changed T2 assigned → running
+  ↳ agent.state_changed Chi (researcher) → idle
+  ↳ agent.state_changed Chi (researcher) → researching
+▶ run5 Chi (researcher) task T2
+  ✓ 27.0s, 1 lời gọi công cụ, 5h=0.42
+  ↳ agent.state_changed Chi (researcher) → idle
+  ↳ task.status_changed T2 running → in_review
+  ↳ agent.state_changed Minh (coordinator) → reviewing
+▶ run6 Minh (coordinator) review
+  ↳ task.status_changed T2 in_review → queued
+  ✓ 12.9s, 1 lời gọi công cụ, 5h=0.42
+  ↳ agent.state_changed Minh (coordinator) → idle
+  ↳ meeting.started
+  ↳ agent.state_changed Minh (coordinator) → in_meeting
+  ↳ agent.state_changed An (researcher) → in_meeting
+  ↳ agent.state_changed Chi (researcher) → in_meeting
+▶ run7 An (researcher) chat
+  ✓ 8.3s, 1 lời gọi công cụ, 5h=0.43
+▶ run8 Chi (researcher) chat
+  ✓ 7.7s, 1 lời gọi công cụ, 5h=0.43
+▶ run9 Minh (coordinator) chat
+  ✓ 8.5s, 1 lời gọi công cụ, 5h=0.43
+  ↳ meeting.ended
+  ↳ agent.state_changed Minh (coordinator) → idle
+  ↳ agent.state_changed An (researcher) → idle
+  ↳ agent.state_changed Chi (researcher) → idle
+  ↳ task.status_changed T3 queued → assigned
+  ↳ agent.state_changed Minh (coordinator) → assigned
+  ↳ task.status_changed T3 assigned → running
+  ↳ agent.state_changed Minh (coordinator) → idle
+  ↳ agent.state_changed Minh (coordinator) → planning
+▶ run10 Minh (coordinator) task T3
+  ✓ 10.6s, 1 lời gọi công cụ, 5h=0.43
+  ↳ agent.state_changed Minh (coordinator) → idle
+  ↳ task.status_changed T3 running → done
+  ↳ agent.state_changed Linh (director) → conversing
+▶ run11 Linh (director) briefing
+  ✓ 8.5s, 1 lời gọi công cụ, 5h=0.43
+  ↳ agent.state_changed Linh (director) → idle
+
+=== Lượt chạy ===
+┌─────────┬────────┬────────────┬──────┬───────┬───────┬─────┬──────┬──────┬──────┐
+│ (index) │ agent  │ purpose    │ giây │ turns │ tools │ web │ out  │ 5h   │ ok   │
+├─────────┼────────┼────────────┼──────┼───────┼───────┼─────┼──────┼──────┼──────┤
+│ 0       │ 'Minh' │ 'planning' │ 12.4 │ 3     │ 2     │ 0   │ 1453 │ 0.4  │ true │
+│ 1       │ 'An'   │ 'task'     │ 23.4 │ 5     │ 1     │ 0   │ 1650 │ 0.41 │ true │
+│ 2       │ 'Chi'  │ 'task'     │ 22.7 │ 4     │ 1     │ 0   │ 1599 │ 0.41 │ true │
+│ 3       │ 'Minh' │ 'review'   │ 13.1 │ 3     │ 2     │ 0   │ 1525 │ 0.42 │ true │
+│ 4       │ 'Chi'  │ 'task'     │ 27   │ 5     │ 1     │ 0   │ 2262 │ 0.42 │ true │
+│ 5       │ 'Minh' │ 'review'   │ 12.9 │ 2     │ 1     │ 0   │ 1032 │ 0.42 │ true │
+│ 6       │ 'An'   │ 'chat'     │ 8.3  │ 2     │ 1     │ 0   │ 583  │ 0.43 │ true │
+│ 7       │ 'Chi'  │ 'chat'     │ 7.7  │ 2     │ 1     │ 0   │ 506  │ 0.43 │ true │
+│ 8       │ 'Minh' │ 'chat'     │ 8.5  │ 2     │ 1     │ 0   │ 879  │ 0.43 │ true │
+│ 9       │ 'Minh' │ 'task'     │ 10.6 │ 2     │ 1     │ 0   │ 1284 │ 0.43 │ true │
+│ 10      │ 'Linh' │ 'briefing' │ 8.5  │ 2     │ 1     │ 0   │ 908  │ 0.43 │ true │
+└─────────┴────────┴────────────┴──────┴───────┴───────┴─────┴──────┴──────┴──────┘
+Tổng: 155s; nhật ký: 13 mục (0 bị từ chối)
+
+=== Báo cáo của Director ===
+Báo cáo TikTok cho Bông Bông (trà sữa trân châu đường đen, 35k)
+
+**Xu hướng (dữ liệu hạn chế, cần kiểm tra lại):** Review món mới và nội dung nhân viên/KOC đang lên, food reviewer lớn giảm sức hút. Trà đậm vị đã bão hòa nên cần góc đường đen và giá 35k. Xu hướng tiết kiệm hợp với "ly 35k đáng tiền". Gen Z dùng TikTok để tìm quán. Giờ đăng và nhạc chưa có nguồn xác thực, cần test trên Creative Center.
+
+**Đối thủ:** Chưa có số liệu TikTok thật vì TikTok chặn công cụ đọc trang, còn Kalodata/FastMoss cần đăng nhập và trả phí. Chỉ có dữ liệu gián tiếp từ báo cáo Kompa (chưa mở bản gốc): TocoToco dẫn đầu thảo luận 7 tháng liên tục, Gongcha 12%, KOI Thé 7,6%, chưa phản ánh đủ Phúc Long. "Khoảng trống" ASMR đường đen và UGC sinh viên chưa được chứng minh.
+
+**3 hướng (đều là giả thuyết, cần test):**
+1. POV nhân viên/ASMR nấu trân châu đường đen.
+2. "Ly 35k cho sinh viên": UGC/KOC sinh viên TP.HCM.
+3. Cộng đồng: (a) thử thách rủ bạn + duet review; (b) food tour quận 1/Thủ Đức.
+
+**Kế hoạch:** Chạy thử 1–2 tuần, 3–5 video mỗi hướng, rồi dồn ngân sách vào hướng có view, lưu và chia sẻ tốt nhất.
+
+**Cần anh/chị hỗ trợ:** Người có TikTok hoặc Kalodata/FastMoss lấy dữ liệu 6–7 thương hiệu (follower, 10 video gần nhất, top view, hashtag, KOL/KOC), kèm URL và ngày lấy.

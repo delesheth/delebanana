@@ -1,0 +1,1 @@
+CREATE INDEX `messages_thread` ON `messages` (`conversation_id`,`campaign_id`,`created_at`);
