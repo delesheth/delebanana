@@ -28,7 +28,7 @@ trong backend thông qua Event Bus (SSE), không phải chuyển động ngẫu 
 | Trụ cột | Ý nghĩa | Module chính (xem [modules.md](modules.md)) | Hiện trạng (2026-11-24) |
 |---|---|---|---|
 | **AI Agent Orchestration** | Agent phối hợp, giao việc, trao đổi, đánh giá và làm lại; Director là đầu mối duy nhất với người dùng | Orchestration Engine, Agent Registry, CLI Harness Gateway, Memory | Đã triển khai Engine điều phối, CLI Harness (Claude Code), vòng đời Task/Campaign |
-| **3D Virtual Office** | Trực quan hóa trạng thái thật của Agent trong văn phòng 3D, click nhân vật để mở bảng thông tin và kiểm soát | Event Bus & Realtime, 3D Virtual Office, Dashboard UI | Hoàn thiện 6 phòng 3D cân đối, animation trạng thái, di chuyển qua hành lang, Dock phòng, bảng duyệt |
+| **3D Virtual Office** | Trực quan hóa trạng thái thật của Agent trong văn phòng 3D, click nhân vật để mở bảng thông tin và kiểm soát | Event Bus & Realtime, 3D Virtual Office, Dashboard UI | Hoàn thiện văn phòng 3D 8 phòng (6 khu vực chức năng + Director Office, Lounge Bar) cân đối, animation trạng thái, di chuyển qua hành lang, Dock phòng, bảng duyệt |
 | **Marketing Automation** | Tự động hóa nghiên cứu, ý tưởng, video, đăng bài, phân tích bằng API chính thức | Campaign & Content, Video Production Pipeline, Publishing & Social Accounts, Analytics | Hoàn thiện luồng sinh 3 kịch bản, quy trình duyệt video, đăng Facebook & Instagram Reels qua Meta Graph API |
 
 Ba lớp ngang đi qua cả ba trụ cột: Identity & Workspace, Cost Management, Audit & Governance.

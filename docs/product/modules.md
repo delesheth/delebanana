@@ -48,7 +48,7 @@ Quy ước: **D-n** là quyết định đã chốt trong [roadmap.md](roadmap.m
 
 | Tính năng gốc | Module |
 |---|---|
-| Văn phòng isometric Stylized 3D, bố cục cố định, 6 khu vực (Research, Creative, Scriptwriting, Video Studio, Meeting Room, General Workspace) | M12 |
+| Văn phòng isometric Stylized 3D, bố cục cố định, 6 khu vực (Research, Creative, Scriptwriting, Video Studio, Meeting Room, General Workspace), hiển thị thành 8 phòng (thêm Director Office và Lounge Bar) | M12 |
 | Nhân vật 3D riêng mỗi Agent; tùy chỉnh ngoại hình, trang phục, tên | M12, M2 |
 | Di chuyển giữa phòng, làm việc, họp, chờ duyệt, nghỉ/chờ việc theo trạng thái thật | M12, M11 |
 | Click nhân vật xem thông tin và tương tác | M12, M13 |

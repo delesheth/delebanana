@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <em>Văn phòng 3D tương tác của Dele Banana — Trạng thái nhân vật AI phản ánh chính xác hoạt động backend thời gian thực.</em>
+  <em>Ảnh chụp thực tế văn phòng 3D của Dele Banana — 8 phòng, mỗi nhân vật AI hiển thị đúng trạng thái backend thời gian thực (ví dụ “Dele · Rảnh”, “TC · Rảnh”).</em>
 </p>
 
 ---
@@ -19,28 +19,37 @@
 | Trụ cột | Mô tả | Công nghệ & Triển khai |
 |---|---|---|
 | **🤖 AI Agent Orchestration** | Đội ngũ Agent phối hợp nhịp nhàng: **Director** là đầu mối giao tiếp duy nhất; **Coordinator** lập kế hoạch, phân chia task và nghiệm thu; các **Agent chuyên môn** (An nghiên cứu, Hà biên kịch, Bình sáng tạo, Video Producer, Publisher, Analyst) thực thi công việc. | CLI Harness Gateway (Claude Code / Gemini CLI qua gói thuê bao), State Machine hữu hạn, Hàng đợi nhiệm vụ. |
-| **🏢 3D Virtual Office** | Không gian văn phòng 3D isometric stylized (Kenney low-poly assets) gồm 6 khu vực chức năng riêng biệt. Mọi di chuyển, cử chỉ (gõ phím, thảo luận, họp, nghỉ ngơi) đều phản ánh trạng thái thực từ Event Bus backend. | Three.js qua React Three Fiber + Drei, Perspective Camera 38° FOV, Soundscape, Event Bus thời gian thực qua Server-Sent Events (SSE). |
+| **🏢 3D Virtual Office** | Không gian văn phòng 3D isometric stylized (Kenney low-poly assets) gồm 8 phòng thuộc 6 khu vực chức năng. Mọi di chuyển, cử chỉ (gõ phím, thảo luận, họp, nghỉ ngơi) đều phản ánh trạng thái thực từ Event Bus backend. | Three.js qua React Three Fiber + Drei, Perspective Camera 38° FOV, Soundscape, Event Bus thời gian thực qua Server-Sent Events (SSE). |
 | **🚀 Marketing Automation** | Tự động hóa trọn gói vòng đời chiến dịch: Nghiên cứu thị trường & đối thủ → Brainstorm ý tưởng & 3 kịch bản khác biệt → Sản xuất video ngắn 9:16 (Veo/Gemini) → Phê duyệt & Đăng tự động lên TikTok, Facebook Reels, Instagram Reels → Đo lường phân tích hiệu suất. | Hono backend, SQLite (Drizzle ORM), Meta Graph API (Facebook Reels + Instagram Reels Resumable Upload), SSE Event Bus. |
 
 ---
 
 ## 🗺️ Bố Cục Văn Phòng 3D & Đội Ngũ Nhân Viên
 
-Văn phòng được thiết kế theo tỷ lệ đối xứng chuẩn kiến trúc (xem [docs/design/05-office-decor.md](docs/design/05-office-decor.md)) với 6 khu vực chuyên biệt:
+Văn phòng gồm **8 phòng** xếp thành 3 dãy (bắc → nam), nối với nhau bằng hành lang chữ thập. Đồ đạc trong các phòng riêng tuân thủ quy tắc đối xứng nghiêm ngặt (xem [docs/design/05-office-decor.md](docs/design/05-office-decor.md)). Về mặt domain, các phòng thuộc 6 khu vực chức năng (Research, Creative, Scriptwriting, Video Studio, Meeting Room, General Workspace); Phòng Giám đốc và Lounge Bar là phòng hiển thị riêng.
 
-1. **🏢 Phòng Giám Đốc (Director Desk) & Khu Làm Việc Chung (General Workspace)**:
-   - Bàn làm việc chữ U lớn của Director với hệ thống màn hình giám sát chiến dịch.
-   - Trạm làm việc của **Coordinator**, **Publisher** (Đăng bài) và **Analyst** (Phân tích).
-2. **👥 Phòng Họp (Meeting Room)**:
-   - Bàn họp tròn trung tâm, nơi toàn bộ đội ngũ tập trung khi Trưởng phòng chia việc (`planning`) hoặc nghiệm thu duyệt bài (`reviewing`).
-3. **📚 Phòng Nghiên Cứu (Research Lab)**:
-   - Do **An (Học giả)** phụ trách: Sàn gỗ óc chó tối màu, thảm xanh rêu, đèn banker cổ điển, kệ sách tài liệu và tượng bán thân màu đồng. Nghiên cứu xu hướng, đối thủ và chân dung khách hàng.
-4. **🎨 Phòng Sáng Tạo (Creative Studio)**:
-   - Do **Bình (Hiphop)** phụ trách: Sàn bê tông đen, viền LED neon rực rỡ, bục DJ, vương miện neon và ghế lười tím. Định hình góc tiếp cận thị giác và hook video.
-5. **✍️ Phòng Biên Kịch (Scriptwriting Suite)**:
-   - Do **Hà (Sang trọng)** phụ trách: Sàn gỗ trắng hồng, thảm tròn hồng, bàn đá cẩm thạch trắng viền vàng, tim neon nghệ thuật và sofa hồng. Soạn thảo 3 phương án kịch bản độc lập.
-6. **🎬 Studio Sản Xuất Video (Video Production Studio)**:
-   - Do **Video Producer** phụ trách: Phông xanh chroma key, máy quay phim chuyên nghiệp trên tripod, đèn softbox chiếu sáng và sofa tiếp khách.
+```text
+┌──────────────────────┬──────────────────┬──────────────────────┐
+│ 📚 Research          │ 🏢 Director      │ ✍️ Scriptwriting      │  Dãy bắc
+│    Department        │    Office        │    Department        │
+├────────────────┬─────┴──────────────────┴─────┬────────────────┤
+│ 🎨 Creative    │       👥 Meeting Room        │ 💼 General     │  Dãy giữa
+│    Department  │                              │    Workspace   │
+├────────────────┴──────────────┬───────────────┴────────────────┤
+│ 🎬 Video Production Studio    │ 🍸 Lounge Bar                  │  Dãy nam
+└───────────────────────────────┴────────────────────────────────┘
+```
+
+1. **📚 Research Department** — do **An (Học giả)** phụ trách: sàn gỗ óc chó tối màu, thảm xanh rêu, bàn óc chó có đèn banker, tủ sách lớn giữa hai cửa sổ, hai tượng bán thân màu đồng. Nghiên cứu xu hướng, đối thủ và chân dung khách hàng.
+2. **🏢 Director Office** — bàn làm việc của **Director (Dele)**, đầu mối duy nhất trò chuyện với người dùng qua khung "Chat với Dele".
+3. **✍️ Scriptwriting Department** — do **Hà (Sang trọng)** phụ trách: sàn gỗ trắng hồng, thảm tròn hồng, bàn đá trắng viền vàng, tim neon và sofa hồng. Soạn thảo 3 phương án kịch bản độc lập.
+4. **🎨 Creative Department** — do **Bình (Hiphop)** phụ trách: sàn bê tông đen, bục DJ với hai loa, graffiti và vương miện neon, bàn đen viền LED trên thảm xanh neon, hai ghế lười tím. Định hình góc tiếp cận thị giác và hook video.
+5. **👥 Meeting Room** — bàn họp tròn ở trung tâm văn phòng; khi Trưởng phòng chia việc (`planning`) hoặc nghiệm thu (`reviewing`), cả đội (trừ Giám đốc) vào ngồi quanh bàn.
+6. **💼 General Workspace** — bàn chữ U của Trưởng phòng **Coordinator (TC)** cùng các bàn cho **Publisher** (Đăng bài) và **Analyst** (Phân tích).
+7. **🎬 Video Production Studio** — do **Video Producer** phụ trách: phông xanh chroma key, máy quay trên tripod, đèn softbox, sofa vòng cung. Video Producer đứng sau máy quay.
+8. **🍸 Lounge Bar** — quầy bar tròn ở giữa, booth ghế da; Agent rảnh (`idle`) ra đây nghỉ, Lounge hết chỗ thì về bàn của mình.
+
+Thanh **Dock** ở cạnh dưới màn hình cho phép bay camera tới từng phòng; nút **Campaign** mở danh sách chiến dịch.
 
 ---
 
